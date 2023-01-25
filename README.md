@@ -26,9 +26,11 @@ public class SpringbootApplication {
 			servletContext.addServlet("hello", new HttpServlet(){
 				@Override
 				protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException {
-					resp.setStatus(200);
-					resp.setHeader("Content-Type", "text/plain");
-					resp.getWriter().print("Hello Servlet");
+					String name = req.getParameter("name");
+
+					resp.setStatus(HttpStatus.OK.value());
+					resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+					resp.getWriter().print("Hello " + name);
 				}
 			}).addMapping("/hello");
 		});
