@@ -1,19 +1,23 @@
-package kr.jay.springboot;
+![image](https://user-images.githubusercontent.com/60100532/214589136-fc4afd7c-6ffa-4bb6-8c03-b95daea555e6.png)
 
-import java.io.IOException;
+```java
+public class SpringbootApplication {
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+	public static void main(String[] args) {
+		ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+		WebServer webServer = serverFactory.getWebServer();
+		webServer.start();
+	}
 
-import org.apache.catalina.startup.Tomcat;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+}
 
+```
+---
+
+---
+![image](https://user-images.githubusercontent.com/60100532/214589291-ddaf717f-a175-4dbd-87ad-5fa37a4d59d2.png)
+
+```java
 public class SpringbootApplication {
 
 	public static void main(String[] args) {
@@ -32,3 +36,5 @@ public class SpringbootApplication {
 	}
 
 }
+
+```
