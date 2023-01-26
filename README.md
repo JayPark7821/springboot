@@ -170,3 +170,27 @@ public class SpringbootApplication {
 }
 
 ```
+___
+
+### 의존 오브젝트 추가
+![image](https://user-images.githubusercontent.com/60100532/214849964-606eb493-609e-47c7-a93a-263d3f980d06.png)
+
+```java
+public class HelloController {
+	public String hello(String name) {
+		SimpleHelloService helloService = new SimpleHelloService();
+		return helloService.sayHello(Objects.requireNonNull(name));
+	}
+}
+
+```
+```java
+
+public class SimpleHelloService {
+
+	String sayHello(String name) {
+		return "Hello " + name;
+	}
+}
+```
+
