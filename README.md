@@ -277,3 +277,31 @@ public class HelloController {
 }
 
 ```
+
+### 스프링 컨테이너로 통합
+* 스프링 컨테이너가 생성될 때 DispatcherServlet이 초기화 되도록 변경
+```java
+
+public class SpringbootApplication {
+
+	public static void main(String[] args) {
+		GenericWebApplicationContext applicationContext = new GenericWebApplicationContext(){
+			@Override
+			protected void onRefresh() {
+				super.onRefresh();
+
+				ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+				WebServer webServer = serverFactory.getWebServer(servletContext -> {
+					servletContext.addServlet("dispatcherServlet",
+						new DispatcherServlet(this)
+					).addMapping("/*");
+				});
+				webServer.start();
+			}
+		};
+		applicationContext.registerBean(HelloController.class);
+		applicationContext.registerBean(SimpleHelloService.class);
+		applicationContext.refresh();
+	}
+}
+```
