@@ -193,4 +193,40 @@ public class SimpleHelloService {
 	}
 }
 ```
+___
 
+### 의존 오브젝트 DI 적용
+
+![image](https://user-images.githubusercontent.com/60100532/214853715-511a6ba9-86f3-4b7d-8a5c-a2e52eae61b4.png)
+```java
+public class HelloController {
+
+	private final HelloService helloService;
+
+	public HelloController(HelloService helloService) {
+		this.helloService = helloService;
+	}
+
+	public String hello(String name) {
+		return helloService.sayHello(Objects.requireNonNull(name));
+	}
+}
+```
+```java
+public interface HelloService {
+	String sayHello(String name);
+}
+
+```
+```java
+public class SpringbootApplication {
+
+	public static void main(String[] args) {
+		GenericApplicationContext applicationContext = new GenericApplicationContext();
+		applicationContext.registerBean(HelloController.class);
+		applicationContext.registerBean(SimpleHelloService.class);
+		applicationContext.refresh();
+        ...
+	}
+}
+```
