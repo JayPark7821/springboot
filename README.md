@@ -126,3 +126,47 @@ public class SpringbootApplication {
 
 ```
  
+---
+
+---
+
+## 독립 실행형 스프링 어플리케이션
+![image](https://user-images.githubusercontent.com/60100532/214847908-adac3438-a1cf-4a49-9a6c-dabad32403f6.png)
+* 기존 frontController에서 HelloController를 생성하여 사용하던 방식에서
+* HelloController를 스프링 컨테이너에 등록하여 사용하는 방식으로 변경
+
+```java
+public class SpringbootApplication {
+
+	public static void main(String[] args) {
+		GenericApplicationContext applicationContext = new GenericApplicationContext();
+		applicationContext.registerBean(HelloController.class);
+		applicationContext.refresh();
+
+		ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+		WebServer webServer = serverFactory.getWebServer(servletContext -> {
+			servletContext.addServlet("frontcontroller", new HttpServlet(){
+				@Override
+				protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException {
+					// 인증, 보안, 다국어, 공통 기능
+					if (req.getRequestURI().equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
+						String name = req.getParameter("name");
+
+						HelloController helloController = applicationContext.getBean(HelloController.class);
+						String response = helloController.hello(name);
+
+						resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
+						resp.getWriter().print(response);
+					} else {
+						resp.setStatus(HttpStatus.NOT_FOUND.value());
+					}
+
+				}
+			}).addMapping("/*");
+		});
+		webServer.start();
+	}
+
+}
+
+```
