@@ -230,3 +230,50 @@ public class SpringbootApplication {
 	}
 }
 ```
+
+___
+
+### DispatcherServlet으로 전환
+* 어플리케이션과 긴밀하게 연관되어있는 로직이 servlet코드안에 녹아있다.
+  * Mapping - 웹 요청이 들어왔을때 그 요청을 처리해줄 controller를 찾는 로직 (url, http method) 
+  * 요청의 파라미터
+
+```java
+public class SpringbootApplication {
+
+	public static void main(String[] args) {
+		GenericWebApplicationContext applicationContext = new GenericWebApplicationContext();
+		applicationContext.registerBean(HelloController.class);
+		applicationContext.registerBean(SimpleHelloService.class);
+		applicationContext.refresh();
+
+		ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+		WebServer webServer = serverFactory.getWebServer(servletContext -> {
+			servletContext.addServlet("dispatcherServlet",
+					new DispatcherServlet(applicationContext)
+				).addMapping("/*");
+		});
+		webServer.start();
+	}
+
+}
+```
+
+```java
+@RequestMapping
+public class HelloController {
+
+	private final HelloService helloService;
+
+	public HelloController(HelloService helloService) {
+		this.helloService = helloService;
+	}
+
+	@GetMapping("/hello")
+	@ResponseBody
+	public String hello(String name) {
+		return helloService.sayHello(Objects.requireNonNull(name));
+	}
+}
+
+```
