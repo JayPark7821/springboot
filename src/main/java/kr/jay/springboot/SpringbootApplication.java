@@ -21,16 +21,11 @@ public class SpringbootApplication {
 
 	@Bean
 	public DispatcherServlet dispatcherServlet() {
-		return new DispatcherServlet(new AnnotationConfigWebApplicationContext());
+		return new DispatcherServlet();
 	}
-
 
 	public static void main(String[] args) {
-		MySpringApplication.run(SpringbootApplication.class, args);
+		SpringApplication.run(SpringbootApplication.class, args);
 	}
-
-	// public static void main(Stringp[] args) {
-	// 	SpringApplication.run(SpringbootApplication.class, args);
-	// }
 
 }
