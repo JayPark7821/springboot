@@ -305,3 +305,43 @@ public class SpringbootApplication {
 	}
 }
 ```
+
+
+___
+
+### 자바코드 구성정보 사용
+```java
+@Configuration
+public class SpringbootApplication {
+
+	@Bean
+	public HelloController helloController(HelloService helloService) {
+		return new HelloController(helloService);
+	}
+
+	@Bean
+	public HelloService helloService() {
+		return new SimpleHelloService();
+	}
+
+	public static void main(String[] args) {
+
+		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext(){
+			@Override
+			protected void onRefresh() {
+				super.onRefresh();
+
+				ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+				WebServer webServer = serverFactory.getWebServer(servletContext -> {
+					servletContext.addServlet("dispatcherServlet",
+						new DispatcherServlet(this)
+					).addMapping("/*");
+				});
+				webServer.start();
+			}
+		};
+		applicationContext.register(SpringbootApplication.class);
+		applicationContext.refresh();
+	}
+}
+```
