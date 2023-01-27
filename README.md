@@ -345,3 +345,48 @@ public class SpringbootApplication {
 	}
 }
 ```
+
+### @Component Scan
+```java
+@Configuration
+@ComponentScan
+public class SpringbootApplication {
+	public static void main(String[] args) {
+
+		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext(){
+			@Override
+			protected void onRefresh() {
+				super.onRefresh();
+
+				ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+				WebServer webServer = serverFactory.getWebServer(servletContext -> {
+					servletContext.addServlet("dispatcherServlet",
+						new DispatcherServlet(this)
+					).addMapping("/*");
+				});
+				webServer.start();
+			}
+		};
+		applicationContext.register(SpringbootApplication.class);
+		applicationContext.refresh();
+	}
+}
+
+```
+```java
+@RestController
+public class HelloController {
+
+	private final HelloService helloService;
+
+	public HelloController(HelloService helloService) {
+		this.helloService = helloService;
+	}
+
+	@GetMapping("/hello")
+	public String hello(String name) {
+		return helloService.sayHello(Objects.requireNonNull(name));
+	}
+}
+
+```
