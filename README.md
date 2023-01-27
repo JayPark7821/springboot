@@ -390,3 +390,68 @@ public class HelloController {
 }
 
 ```
+### Bean의 생명주기 메서드
+```java
+@Configuration
+@ComponentScan
+public class SpringbootApplication {
+
+  @Bean
+  public ServletWebServerFactory servletWebServerFactory() {
+    return new TomcatServletWebServerFactory();
+  }
+
+  @Bean
+  public DispatcherServlet dispatcherServlet() {
+    return new DispatcherServlet(new AnnotationConfigWebApplicationContext());
+  }
+
+
+  public static void main(String[] args) {
+
+    AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext(){
+      @Override
+      protected void onRefresh() {
+        super.onRefresh();
+
+        ServletWebServerFactory serverFactory = this.getBean(ServletWebServerFactory.class);
+        DispatcherServlet dispatcherServlet = this.getBean(DispatcherServlet.class);
+        // dispatcherServlet.setApplicationContext(this);
+
+        WebServer webServer = serverFactory.getWebServer(servletContext -> {
+          servletContext.addServlet("dispatcherServlet",dispatcherServlet)
+                  .addMapping("/*");
+        });
+        webServer.start();
+      }
+    };
+    applicationContext.register(SpringbootApplication.class);
+    applicationContext.refresh();
+  }
+}
+
+```
+```java
+@RestController
+public class HelloController implements ApplicationContextAware {
+
+	private final HelloService helloService;
+	private ApplicationContext applicationContext;
+
+	public HelloController(HelloService helloService) {
+		this.helloService = helloService;
+	}
+
+	@GetMapping("/hello")
+	public String hello(String name) {
+		return helloService.sayHello(Objects.requireNonNull(name));
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		System.out.println("applicationContext = " + applicationContext);
+		this.applicationContext = applicationContext;
+	}
+}
+
+```
