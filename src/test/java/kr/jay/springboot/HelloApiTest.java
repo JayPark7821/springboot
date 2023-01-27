@@ -18,7 +18,7 @@ class HelloApiTest {
 
 		Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Assertions.assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE)).startsWith(MediaType.TEXT_PLAIN_VALUE);
-		Assertions.assertThat(response.getBody()).isEqualTo("Hello jay");
+		Assertions.assertThat(response.getBody()).isEqualTo("*Hello jay*");
 	}
 
 	@Test
