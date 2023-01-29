@@ -542,3 +542,27 @@ public @interface MySpringBootApplication {
 
 ```
 ![image](https://user-images.githubusercontent.com/60100532/215332338-82581e16-6819-4c12-9c15-a4837127d003.png)
+
+
+### 동적인 자동 구성 정보 등록
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Import(MyAutoConfigImportSelector.class)
+public @interface EnableMyAutoconfiguration {
+}
+
+```
+```java
+public class MyAutoConfigImportSelector implements DeferredImportSelector {
+
+	@Override
+	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+		return new String[]{
+			"kr.jay.config.autoconfig.DispatcherServletConfig",
+			"kr.jay.config.autoconfig.TomcatWebServerConfig"
+		};
+	}
+}
+
+```
