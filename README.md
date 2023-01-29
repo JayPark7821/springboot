@@ -496,3 +496,49 @@ public class SpringbootApplication {
 }
 
 ```
+
+### 빈 오브젝트의 역할과 구분
+![image](https://user-images.githubusercontent.com/60100532/215331236-f035bdb6-50f9-4187-952d-f1f530e79810.png)
+* 스프링 컨테이너가 생성하고 관리하는 빈들은 컨테이너 인프라스트럭처 빈 & 애플리케이션 빈으로 구분한다.
+
+```java
+@Configuration
+public class DispatcherServletConfig {
+	@Bean
+	public DispatcherServlet dispatcherServlet() {
+		return new DispatcherServlet();
+	}
+
+}
+
+@Configuration
+public class TomcatWebServerConfig {
+  @Bean
+  public ServletWebServerFactory servletWebServerFactory() {
+    return new TomcatServletWebServerFactory();
+  }
+
+}
+
+
+```
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Import({DispatcherServletConfig.class, TomcatWebServerConfig.class})
+public @interface EnableMyAutoconfiguration {
+}
+
+```
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Configuration
+@ComponentScan
+@EnableMyAutoconfiguration
+public @interface MySpringBootApplication {
+}
+
+```
+![image](https://user-images.githubusercontent.com/60100532/215332338-82581e16-6819-4c12-9c15-a4837127d003.png)
