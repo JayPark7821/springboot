@@ -455,3 +455,44 @@ public class HelloController implements ApplicationContextAware {
 }
 
 ```
+
+## 자동 구성 기반 어플리케이션
+### 합성 어노테이션 적용
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Configuration
+@ComponentScan
+public @interface MySpringBootAnnotation {
+}
+
+```
+```java
+@Configuration
+public class Config {
+	@Bean
+	public ServletWebServerFactory servletWebServerFactory() {
+		return new TomcatServletWebServerFactory();
+	}
+
+	@Bean
+	public DispatcherServlet dispatcherServlet() {
+		return new DispatcherServlet();
+	}
+
+}
+
+```
+
+```java
+@MySpringBootAnnotation
+public class SpringbootApplication {
+
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootApplication.class, args);
+	}
+
+}
+
+```
