@@ -566,3 +566,37 @@ public class MyAutoConfigImportSelector implements DeferredImportSelector {
 }
 
 ```
+
+### 자동 구성 정보 파일 분리
+
+```java
+public class MyAutoConfigImportSelector implements DeferredImportSelector {
+
+	private final ClassLoader classLoader;
+
+	public MyAutoConfigImportSelector(ClassLoader classLoader) {
+		this.classLoader = classLoader;
+	}
+
+	@Override
+	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+		Iterable<String> candidates = ImportCandidates.load(MyAutoConfiguration.class, classLoader);
+		return StreamSupport.stream(candidates.spliterator(), false).toArray(String[]::new);
+	}
+}
+
+```
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Configuration
+public @interface MyAutoConfiguration {
+
+}
+
+```
+```java
+//kr.jay.config.MyAutoConfiguration.imports
+kr.jay.config.autoconfig.TomcatWebServerConfig
+kr.jay.config.autoconfig.DispatcherServletConfig
+```
