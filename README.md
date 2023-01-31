@@ -629,3 +629,40 @@ kr.jay.config.autoconfig.TomcatWebServerConfig
 kr.jay.config.autoconfig.JettyWebServerConfig
 kr.jay.config.autoconfig.DispatcherServletConfig
 ```
+
+### @Conditional 과 Condition
+```java
+@MyAutoConfiguration
+@Conditional(JettyWebServerConfig.JettyCondition.class)
+public class JettyWebServerConfig {
+	@Bean("jettyWebServerFactory")
+	public ServletWebServerFactory servletWebServerFactory() {
+		return new JettyServletWebServerFactory();
+	}
+
+	static class JettyCondition implements Condition {
+		@Override
+		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+			return true;
+		}
+	}
+}
+
+@MyAutoConfiguration
+@Conditional(TomcatWebServerConfig.TomcatCondition.class)
+public class TomcatWebServerConfig {
+  @Bean("tomcatWebServerFactory")
+  public ServletWebServerFactory servletWebServerFactory() {
+    return new TomcatServletWebServerFactory();
+  }
+
+  static class TomcatCondition implements Condition {
+    @Override
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+      return false;
+    }
+  }
+}
+
+
+```
