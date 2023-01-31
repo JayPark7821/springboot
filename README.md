@@ -600,3 +600,32 @@ public @interface MyAutoConfiguration {
 kr.jay.config.autoconfig.TomcatWebServerConfig
 kr.jay.config.autoconfig.DispatcherServletConfig
 ```
+
+### 조건부 자동 구성
+```java
+@MyAutoConfiguration
+public class JettyWebServerConfig {
+	@Bean("jettyWebServerFactory")
+	public ServletWebServerFactory servletWebServerFactory() {
+		return new JettyServletWebServerFactory();
+	}
+
+}
+
+@MyAutoConfiguration
+public class TomcatWebServerConfig {
+  @Bean("tomcatWebServerFactory")
+  public ServletWebServerFactory servletWebServerFactory() {
+    return new TomcatServletWebServerFactory();
+  }
+
+}
+
+
+```
+```java
+// kr.jay.config.MyAutoConfiguration.imports
+kr.jay.config.autoconfig.TomcatWebServerConfig
+kr.jay.config.autoconfig.JettyWebServerConfig
+kr.jay.config.autoconfig.DispatcherServletConfig
+```
