@@ -1,5 +1,8 @@
 package kr.jay.study;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -34,19 +37,27 @@ public class ConditionalTest {
 
 	}
 
-	@Configuration
+	@Retention(RetentionPolicy.RUNTIME)
 	@Conditional(TrueCondition.class)
+	@interface TrueConditional{}
+
+	@Configuration
+	@TrueConditional
 	static class Config1 {
 		@Bean
 		MyBean myBean() {
 			return new MyBean();
 		}
-
-
 	}
 
-	@Configuration
+
+	@Retention(RetentionPolicy.RUNTIME)
 	@Conditional(FalseCondition.class)
+	@interface FalseConditional{}
+
+
+	@Configuration
+	@FalseConditional
 	static class Config2 {
 		@Bean
 		MyBean myBean() {
