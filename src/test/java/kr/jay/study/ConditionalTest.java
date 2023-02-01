@@ -2,6 +2,7 @@ package kr.jay.study;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Map;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.util.MultiValueMap;
 
 public class ConditionalTest {
 
@@ -38,11 +40,13 @@ public class ConditionalTest {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@Conditional(TrueCondition.class)
-	@interface TrueConditional{}
+	@Conditional(BooleanCondition.class)
+	@interface BooleanConditional{
+		boolean value();
+	}
 
 	@Configuration
-	@TrueConditional
+	@BooleanConditional(true)
 	static class Config1 {
 		@Bean
 		MyBean myBean() {
@@ -50,14 +54,8 @@ public class ConditionalTest {
 		}
 	}
 
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@Conditional(FalseCondition.class)
-	@interface FalseConditional{}
-
-
 	@Configuration
-	@FalseConditional
+	@BooleanConditional(false)
 	static class Config2 {
 		@Bean
 		MyBean myBean() {
@@ -70,17 +68,15 @@ public class ConditionalTest {
 
 	}
 
-	static class TrueCondition implements Condition {
+	static class BooleanCondition implements Condition {
 		@Override
 		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-			return true;
+			Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(
+				BooleanConditional.class.getName());
+
+			Boolean value = (Boolean)annotationAttributes.get("value");
+			return value;
 		}
 	}
 
-	static class FalseCondition implements Condition {
-		@Override
-		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-			return false;
-		}
-	}
 }
