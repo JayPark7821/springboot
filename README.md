@@ -666,3 +666,70 @@ public class TomcatWebServerConfig {
 
 
 ```
+
+### Custom @Conditional
+
+![image](https://user-images.githubusercontent.com/60100532/216630280-dd053aa0-af3c-4b2c-a657-83393e1c285f.png)
+```java
+@MyAutoConfiguration
+// @Conditional(JettyWebServerConfig.JettyCondition.class)
+@ConditionalMyOnClass("org.eclipse.jetty.server.Server")
+public class JettyWebServerConfig {
+	@Bean("jettyWebServerFactory")
+	public ServletWebServerFactory servletWebServerFactory() {
+		return new JettyServletWebServerFactory();
+	}
+
+	// static class JettyCondition implements Condition {
+	// 	@Override
+	// 	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+	// 		return ClassUtils.isPresent("org.eclipse.jetty.server.Server", context.getClassLoader());
+	// 	}
+	// }
+}
+
+```
+
+```java
+@MyAutoConfiguration
+@ConditionalMyOnClass("org.apache.catalina.startup.Tomcat")
+// @Conditional(TomcatWebServerConfig.TomcatCondition.class)
+public class TomcatWebServerConfig {
+	@Bean("tomcatWebServerFactory")
+	public ServletWebServerFactory servletWebServerFactory() {
+		return new TomcatServletWebServerFactory();
+	}
+
+	// static class TomcatCondition implements Condition {
+	// 	@Override
+	// 	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+	// 		return ClassUtils.isPresent("org.apache.catalina.startup.Tomcat", context.getClassLoader());
+	// 	}
+	// }
+}
+
+```
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Conditional(MyOnClassCondition.class)
+public @interface ConditionalMyOnClass {
+	String value();
+}
+
+```
+```java
+public class MyOnClassCondition implements Condition {
+
+	@Override
+	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+		Map<String, Object> attributes = metadata.getAnnotationAttributes(
+			ConditionalMyOnClass.class.getName());
+		String value = (String)attributes.get("value");
+
+		return ClassUtils.isPresent(value, context.getClassLoader());
+	}
+}
+
+```
