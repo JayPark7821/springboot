@@ -733,3 +733,51 @@ public class MyOnClassCondition implements Condition {
 }
 
 ```
+
+
+
+## 스프링 부트의 @Conditional
+> 스프링 프레임워크의 @Profile도 @Conditional 애노테이션이다.
+> @Conditional(ProfileCondition.class)
+> public @interface Profile{
+> 
+
+* 스프링 부트는 다음과 같은 종류의 @Conditional 애노테이션과 Condition을 제공한다. 
+* 스프링 부트의 자동 구성은 이 @Conditional을 이용한다.
+
+### Class Conditions
+* @ConditionalOnClass
+* @ConditionalOnMissingClass
+* 지정한 클래스의 프로젝트내 존재를 확인해서 포함 여부를 결정.
+* 주로 @Configuration클래스 레벨에서 사용하지만 @Bean 메소드에도 적용 가능하다. 
+* 단 클래스 레벨의 검증 없이 @Bean 메소드에만 적용하면 불필요하게 @Configuration 클래스가 빈으로 등록되기 때문에,
+* 클래스 레벨 사용을 우선해야함.
+
+### Bean Conditions
+* @ConditionalOnBean
+* @ConditionalOnMissingBean
+* 빈의 존재 여부를 기준으로 포함여부를 결정함.
+* 빈의 타입 또는 이름을 지정할 수 있다. 
+* 지정된 빈 정보가 없으면 메소드의 리턴 타입을 기준으로 빈의 존재여부를 체크한다.
+* 컨테이너에 등록된 빈 정보를 기준으로 체크하기 때문에 자동 구성 사이에 적용하려면 
+* @Configuration 클래스의 적용 순서가 중요하다. 
+* 개발자가 직접 정의한 커스텀 빈 구성정보가 자동 구성 정보 처리보다 우선하기 때문에 이 관계에 적용하는 것은 안전하다. 
+* 반대로 커스텀 빈 구성 정보에 적용하는 건 피해야 한다. 
+
+> @Configuration 클래스 레벨의 @ConditionalOnClass와 @Bean 메소드 레벨의 
+> @ConditionalOnMissingBean 조합은 가장 대표적으로 사용되는 방식이다. 
+> 
+
+### Property Conditions
+* @ConditionalOnProperty는 스프링의 환경 프로퍼티 정보를 이요함
+
+### Resource Conditions
+* @ConditionalOnResource는 클래스패스에 특정 리소스가 존재하는지 확인함.
+
+### Web Application Conditions
+* @ConditionalOnWebApplication
+* @ConditionalOnNotWebApplication
+* 웹 애플리케이션인지 아닌지를 확인함.
+
+### SpEL Expression Conditions
+* @ConditionalOnExpression은 스프링 SpEL의 처리 결과를 기준으로 판단함.
