@@ -781,3 +781,12 @@ public class MyOnClassCondition implements Condition {
 
 ### SpEL Expression Conditions
 * @ConditionalOnExpression은 스프링 SpEL의 처리 결과를 기준으로 판단함.
+
+
+### 외부 설정을 활용하는 자동 구성
+* Environment Abstraction 
+
+![image](https://user-images.githubusercontent.com/60100532/216989833-fc2b50a4-c0fb-4809-abae-b3bfe53f08fa.png)
+
+
+![image](https://user-images.githubusercontent.com/60100532/216990927-91cbbf12-3953-48c6-9bfb-79780927be9c.png)
