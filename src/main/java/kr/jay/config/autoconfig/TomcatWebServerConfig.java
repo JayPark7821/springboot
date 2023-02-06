@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.ClassUtils;
 
@@ -20,9 +21,9 @@ import kr.jay.config.MyAutoConfiguration;
 public class TomcatWebServerConfig {
 	@Bean("tomcatWebServerFactory")
 	@ConditionalOnMissingBean
-	public ServletWebServerFactory servletWebServerFactory() {
+	public ServletWebServerFactory servletWebServerFactory(Environment env) {
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-		factory.setContextPath("/app");
+		factory.setContextPath(env.getProperty("contextPath"));
 		return factory;
 	}
 

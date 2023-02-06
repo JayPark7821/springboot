@@ -14,7 +14,7 @@ class HelloApiTest {
 	void helloApi() {
 		TestRestTemplate rest = new TestRestTemplate();
 
-		ResponseEntity<String> response = rest.getForEntity("http://localhost:8080/hello?name={name}", String.class, "jay");
+		ResponseEntity<String> response = rest.getForEntity("http://localhost:8080/app/hello?name={name}", String.class, "jay");
 
 		Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Assertions.assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE)).startsWith(MediaType.TEXT_PLAIN_VALUE);
