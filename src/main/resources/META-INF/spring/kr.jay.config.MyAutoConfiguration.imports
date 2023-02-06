@@ -1,3 +1,4 @@
+kr.jay.config.autoconfig.PropertyPlaceholderConfig
 kr.jay.config.autoconfig.TomcatWebServerConfig
 kr.jay.config.autoconfig.JettyWebServerConfig
 kr.jay.config.autoconfig.DispatcherServletConfig
