@@ -1,10 +1,12 @@
 package kr.jay.config.autoconfig;
 
+import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 
 import kr.jay.config.ConditionalMyOnClass;
 import kr.jay.config.MyAutoConfiguration;
@@ -14,20 +16,15 @@ import kr.jay.config.MyAutoConfiguration;
 // @Conditional(TomcatWebServerConfig.TomcatCondition.class)
 public class TomcatWebServerConfig {
 
-	@Value("${contextPath:}")
-	String contextPath;
-
-	@Value("${port:8080}")
-	int port;
-
 	@Bean("tomcatWebServerFactory")
 	@ConditionalOnMissingBean
-	public ServletWebServerFactory servletWebServerFactory() {
+	public ServletWebServerFactory servletWebServerFactory(ServerProperties properties) {
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-		factory.setContextPath(this.contextPath);
-		factory.setPort(this.port);
+		factory.setContextPath(properties.contextPath);
+		factory.setPort(properties.getPort());
 		return factory;
 	}
+
 
 	// static class TomcatCondition implements Condition {
 	// 	@Override
