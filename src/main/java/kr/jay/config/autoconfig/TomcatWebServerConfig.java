@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 
 import kr.jay.config.ConditionalMyOnClass;
@@ -13,6 +14,7 @@ import kr.jay.config.MyAutoConfiguration;
 
 @MyAutoConfiguration
 @ConditionalMyOnClass("org.apache.catalina.startup.Tomcat")
+@Import(ServerProperties.class)
 // @Conditional(TomcatWebServerConfig.TomcatCondition.class)
 public class TomcatWebServerConfig {
 

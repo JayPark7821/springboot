@@ -1,5 +1,9 @@
 package kr.jay.config.autoconfig;
 
+import org.springframework.stereotype.Component;
+
+@Component
+@MyConfigurationProperties
 public class ServerProperties {
 
 	String contextPath;

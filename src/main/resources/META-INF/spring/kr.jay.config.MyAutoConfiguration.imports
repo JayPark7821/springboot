@@ -1,4 +1,4 @@
-kr.jay.config.autoconfig.ServerPropertiesConfig
+kr.jay.config.autoconfig.PropertyPostProcessorConfig
 kr.jay.config.autoconfig.PropertyPlaceholderConfig
 kr.jay.config.autoconfig.TomcatWebServerConfig
 kr.jay.config.autoconfig.JettyWebServerConfig
