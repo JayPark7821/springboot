@@ -14,7 +14,7 @@ import kr.jay.config.MyAutoConfiguration;
 
 @MyAutoConfiguration
 @ConditionalMyOnClass("org.apache.catalina.startup.Tomcat")
-@Import(ServerProperties.class)
+@EnableMyConfigurationProperties(ServerProperties.class)
 // @Conditional(TomcatWebServerConfig.TomcatCondition.class)
 public class TomcatWebServerConfig {
 
