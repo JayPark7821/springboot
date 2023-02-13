@@ -1,15 +1,12 @@
 package kr.jay.config.autoconfig;
 
-import org.apache.catalina.Server;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
 
 import kr.jay.config.ConditionalMyOnClass;
+import kr.jay.config.EnableMyConfigurationProperties;
 import kr.jay.config.MyAutoConfiguration;
 
 @MyAutoConfiguration

@@ -1,4 +1,4 @@
-package kr.jay.config.autoconfig;
+package kr.jay.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -10,6 +10,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
 
 import kr.jay.config.MyAutoConfiguration;
+import kr.jay.config.MyConfigurationProperties;
 
 @MyAutoConfiguration
 public class PropertyPostProcessorConfig {

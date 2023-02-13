@@ -790,3 +790,8 @@ public class MyOnClassCondition implements Condition {
 
 
 ![image](https://user-images.githubusercontent.com/60100532/216990927-91cbbf12-3953-48c6-9bfb-79780927be9c.png)
+
+## Spring JDBC 자동 구성 개발
+* 자동 구성 클래스와 빈 설계
+![image](https://user-images.githubusercontent.com/60100532/218479690-96333730-820a-40ca-9d77-c6c72d0f5d97.png)
+

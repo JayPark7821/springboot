@@ -1,3 +1,4 @@
+kr.jay.config.autoconfig.DataSourceConfig
 kr.jay.config.autoconfig.PropertyPostProcessorConfig
 kr.jay.config.autoconfig.PropertyPlaceholderConfig
 kr.jay.config.autoconfig.TomcatWebServerConfig
